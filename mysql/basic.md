@@ -1,13 +1,14 @@
 # MySQL基础命令
 
 
->    本文来源于网络，可能存在错漏之处，仅供参考。
-
 ### 1. 连接MySQL： `mysql -h host_address -u user_name -p user_password`
 
 ```bash
 mysql -h110.110.110.110 -u root -p 123;
 ```
+
+> 说明：
+-h和ip连在一起
 
 ### 2. 修改密码：`mysqladmin -u user_name -p old_password password new_password`
 
@@ -19,20 +20,26 @@ mysqladmin -u root -p abc123 password def456;
 
 ```bash
 /* mysql grant命令添加用户常用的三种模式 */
-grant all PRIVILEGES on *.* to 'test'@'localhost' identified by '123';
-grant all PRIVILEGES on *.* to 'test'@'%' identified by '123';
-grant all PRIVILEGES on *.* to 'test'@'10.22.225.18' identified by '123';
+grant all PRIVILEGES on *.* to test@localhost identified by '123';
+grant all PRIVILEGES on *.* to test@'%' identified by '123';
+grant all PRIVILEGES on *.* to test@10.22.225.18 identified by '123';
+grant all PRIVILEGES on dk.* to test@10.22.225.18 identified by '123';
+grant select,update,insert,delete,drop,create on dk.user to test@10.22.225.18 identified by '123';
+grant select(id, se, rank) on testdb.apache_log to dba@localhost identified by '123';
+revoke all on *.* from dba@localhost;
 ```
 
 >    说明：  
-第一条命令添加一个本地用户 'test' ，一般用于web服务器和数据库服务器在一起的情况； 
-第二条命令添加一个用户 'test' ，只要能连接数据库服务器的机器都可以使用，这个比较危险，一般不用；  
-最后条命令在数据库服务器上给 '10.22.225.18' 机器添加一个用户'test'，一般用于web服务器和数据库服务器分离的情况。
-
+第一条命令添加一个用户 test ，其可以使用密码123 只可以在localhost上登录，连接到mysql服务器的所有数据库的所有表
+第二条命令添加一个用户 test ，其可以使用密码123 从任何主机连接到mysql服务器的所有数据库的所有表，这个比较危险，一般不用；  
+第三条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器的所有数据库的所有表
+第四条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器上的dk数据库的所有表
+第五条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器上的dk数据库的user表
+第五条命令添加一个用户 dba ，其可以使用密码123 只可以在localhost上登录，选择testdb.apache_log表中的列(id, se, rank)
+收回dba 通过 localhost操作所有数据库表的权限
 
 >    注意：  
-真正使用的时候不会用 `grant all PRIVILEGES on *.*` ，而是根据实际需要设定相关的权限。
-比如 `grant select,insert,delete,update on test.* to 'test'@'localhost' identified by '123';`
+test@10.22.225.18 这部分可以加''，也可以不加，但是密码部分一定要加''
 
 
 ### 4. 创建数据库： `create database db_name`
