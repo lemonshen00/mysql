@@ -8,7 +8,7 @@ mysql -h110.110.110.110 -u root -p 123;
 ```
 
 > 说明：
--h和ip连在一起
+-h和ip连在一起，此命令是登陆到mysql服务器，还未连接到任何的数据库
 
 ### 2. 修改密码：`mysqladmin -u user_name -p old_password password new_password`
 
@@ -45,7 +45,7 @@ revoke all on *.* from dba@localhost;
 第七条命令收回dba 通过 localhost操作所有数据库表的权限
 
 >    注意：  
-test@10.22.225.18 这部分可以加''，也可以不加，但是密码部分一定要加''
+test@10.22.225.18 这部分也可以是'test'@'10.22.225.18'，但是密码部分一定要加''
 
 
 ### 4. 创建数据库： `create database db_name`
