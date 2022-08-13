@@ -16,8 +16,7 @@ mysql -h110.110.110.110 -u root -p 123;
 mysqladmin -u root -p abc123 password def456;
 ```
 
-> 说明：
-需要-u，即修改该用户的密码
+> 说明：需要-u，即修改该用户的密码
 
 ### 3. 增加新用户：`grant select on db_name.* to user_name@login_host identified by 'user_password'`
 
@@ -32,21 +31,13 @@ grant select(id, se, rank) on testdb.apache_log to dba@localhost identified by '
 revoke all on *.* from dba@localhost;
 ```
 
->    说明：  
-第一条命令添加一个用户 test ，其可以使用密码123 只可以在localhost上登录，连接到mysql服务器的所有数据库的所有表
-
-第二条命令添加一个用户 test ，其可以使用密码123 从任何主机连接到mysql服务器的所有数据库的所有表，这个比较危险，一般不用；  
-
-第三条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器的所有数据库的所有表
-
-第四条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器上的dk数据库的所有表
-
-第五条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器上的dk数据库的user表
-
-第六条命令添加一个用户 dba ，其可以使用密码123 只可以在localhost上登录，选择testdb.apache_log表中的列(id, se, rank)
-
-第七条命令收回dba 通过 localhost操作所有数据库表的权限
-
+>    说明：  第一条命令添加一个用户 test ，其可以使用密码123 只可以在localhost上登录，连接到mysql服务器的所有数据库的所有表
+>    第二条命令添加一个用户 test ，其可以使用密码123 从任何主机连接到mysql服务器的所有数据库的所有表，这个比较危险，一般不用；  
+>    第三条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器的所有数据库的所有表
+>    第四条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器上的dk数据库的所有表
+>    第五条命令添加一个用户 test ，其可以使用密码123 从ip为10.22.225.18的主机连接到mysql服务器上的dk数据库的user表
+>    第六条命令添加一个用户 dba ，其可以使用密码123 只可以在localhost上登录，选择testdb.apache_log表中的列(id, se, rank)
+>    第七条命令收回dba 通过 localhost操作所有数据库表的权限
 >    注意：  
 test@10.22.225.18 这部分也可以是'test'@'10.22.225.18'，但是密码部分一定要加''
 
