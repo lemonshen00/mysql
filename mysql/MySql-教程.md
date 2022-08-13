@@ -1,4 +1,4 @@
-# MySql安装
+# 第一章 MySql安装
 
 ## Linux/UNIX 上安装 MySQL
 
@@ -86,3 +86,9 @@ mysqladmin  Ver 8.42 Distrib 5.6.51, for Linux on x86_64
 ```
 
 > 说明：使用mysqladmin命令，给root用户，通过password关键字，更换了一个新的密码 
+
+注意：
+mysql ---> 连接mysql服务器，而不是服务器上的数据库
+mysqladmin ----> 管理mysql服务器，比如修改账号密码，关闭/开启mysql服务器
+
+# 第二章 MySql管理
