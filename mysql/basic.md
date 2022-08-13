@@ -16,6 +16,9 @@ mysql -h110.110.110.110 -u root -p 123;
 mysqladmin -u root -p abc123 password def456;
 ```
 
+> 说明：
+需要-u，即修改该用户的密码
+
 ### 3. 增加新用户：`grant select on db_name.* to user_name@login_host identified by 'user_password'`
 
 ```bash
