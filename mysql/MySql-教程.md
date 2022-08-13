@@ -26,9 +26,22 @@ yum install mysql-server
 chown -R mysql:mysql /var/lib/mysql/
 ```
 
+> 如果报错：invalid user: ‘mysql:mysql’，执行如下命令
+```mysql
+chattr -ia /etc/passwd
+chattr -ia /etc/group
+chattr -ia /etc/shadow
+chattr -ia /etc/gshadow
+
+yum install mysql-server
+chown -R mysql:mysql /var/lib/mysql
+```
+
+
+
 初始化 MySQL：
 ```mysql
-mysqld --initialize
+mysqld --user=root --initialize
 ```
 
 启动 MySQL：
@@ -50,7 +63,7 @@ systemctl status mysqld
 
 linux上该命令将输出以下结果，该结果基于你的系统信息：
 ```mysql
-mysqladmin  Ver 8.23 Distrib 5.0.9-0, for redhat-linux-gnu on i386
+mysqladmin  Ver 8.42 Distrib 5.6.51, for Linux on x86_64
 ```mysql
 
 ## 使用 MySQL Client(Mysql客户端) 执行简单的SQL命令
@@ -66,6 +79,7 @@ mysqladmin  Ver 8.23 Distrib 5.0.9-0, for redhat-linux-gnu on i386
 ```
 
 > 使用mysqladmin命令，给root用户，通过password关键字，设置了一个新的密码 
+> 首次登陆无密码，在输入密码环节，直接回车即可
 
 ```mysql
 [root@host]# mysqladmin -u root "old_passorod" password "new_password";
