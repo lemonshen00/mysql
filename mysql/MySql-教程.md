@@ -59,30 +59,30 @@ systemctl status mysqld
 查看 MySQL 服务器版本：
 ```mysql
 [root@host]# mysqladmin --version
-```mysql
+```
 
 linux上该命令将输出以下结果，该结果基于你的系统信息：
 ```mysql
 mysqladmin  Ver 8.42 Distrib 5.6.51, for Linux on x86_64
-```mysql
+```
 
 ## 使用 MySQL Client(Mysql客户端) 执行简单的SQL命令
 ```mysql
 [root@host]# mysql
-```mysql
+```
 
-> 你可以在 MySQL Client(Mysql客户端) 使用 mysql 命令连接到 MySQL 服务器上，默认情况下 MySQL 服务器的登录密码为空，所以本实例不需要输入密码。
+> 说明：你可以在 MySQL Client(Mysql客户端) 使用 mysql 命令连接到 MySQL 服务器上，默认情况下 MySQL 服务器的登录密码为空，所以本实例不需要输入密码。
 
 ## Mysql安装后需要做的
 ```mysql
 [root@host]# mysqladmin -u root password "new_password";
 ```
 
-> 使用mysqladmin命令，给root用户，通过password关键字，设置了一个新的密码 
-> 首次登陆无密码，在输入密码环节，直接回车即可
+> 说明：使用mysqladmin命令，给root用户，通过password关键字，设置了一个新的密码 
+> 说明：首次登陆无密码，在输入密码环节，直接回车即可，此后root 用户的密码就已经是 "new_password"
 
 ```mysql
 [root@host]# mysqladmin -u root "old_passorod" password "new_password";
 ```
 
-> 使用mysqladmin命令，给root用户，通过password关键字，更换了一个新的密码 
+> 说明：使用mysqladmin命令，给root用户，通过password关键字，更换了一个新的密码 
