@@ -442,6 +442,18 @@ mysql> SELECT coalesce(name, '总数'), SUM(signin) as signin_count FROM  employ
 说明：coalesce函数，如果name为NULL，则使用'总数'
 
 
+## NULL值的查找
+
+
+```mysql
+mysql> SELECT * FROM  employee_tbl where runoob_count = NULL; // 不起作用，即无法查询出数据，即使有的runoob_count 是 NULL
+mysql> SELECT * FROM  employee_tbl where runoob_count is NULL; // 起作用
+```
+
+
+# 第七章 正则表达式
+
+
 
 
 
