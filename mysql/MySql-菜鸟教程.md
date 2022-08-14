@@ -172,6 +172,7 @@ root@host# mysqladmin -u root -p create lm_test_db_2;
 
 ### 方法1
 ```mysql
+root@host# mysql -u root -p
 mysql> drop database lm_test_db1;
 ```
 
