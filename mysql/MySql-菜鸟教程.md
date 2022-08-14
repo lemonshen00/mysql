@@ -72,6 +72,7 @@ mysqladmin  Ver 8.42 Distrib 5.6.51, for Linux on x86_64
 ```
 
 > 说明：你可以在 MySQL Client(Mysql客户端) 使用 mysql 命令连接到 MySQL 服务器上，默认情况下 MySQL 服务器的登录密码为空，所以本实例不需要输入密码。
+> 直接使用mysql命令登录服务器时，用户名是空的，即 ''@'localhost'
 
 ## Mysql安装后需要做的
 ```mysql
