@@ -90,6 +90,60 @@ mysqladmin  Ver 8.42 Distrib 5.6.51, for Linux on x86_64
 
 注意：
 mysql ---> 连接mysql服务器，而不是服务器上的数据库
+
 mysqladmin ----> 管理mysql服务器，比如修改账号密码，关闭/开启mysql服务器
 
 # 第二章 MySql管理
+
+## 启动及关闭 MySQL 服务器
+
+开启mysql服务器
+```mysql
+root@host# cd /usr/bin
+./mysqld_safe &
+```
+
+关闭mysql服务器
+```mysql
+root@host# cd /usr/bin
+./mysqladmin -u root -p shutdown
+Enter password: ******
+```
+
+## MySQL 用户设置
+
+### 方式1 在user表中插入数据
+```mysql
+root@host# mysql -u root -p
+mysql> INSERT INTO user 
+    -> (host, user, password, 
+    -> select_priv, insert_priv, update_priv) 
+    -> VALUES ('localhost', 'guest', 
+    -> PASSWORD('guest123'), 'Y', 'Y', 'Y');
+mysql> FLUSH PRIVILEGES;    
+```
+
+> 说明：上述方式报错，`ERROR 1364 (HY000): Field 'ssl_cipher' doesn't have a default value`，即user表中有一些字段没有缺省值，导致无法insert 成功；
+> 需要额外使用命令：`FLUSH PRIVILEGES;`，否则需要重启mysql服务器后，guest才能登录mysql服务器。 
+
+### 方式2 使用grant 命令
+
+```mysql
+mysql> grant all privileges on *.* to guest@localhost identified by 'guest';
+mysql> select user();
+mysql> select database();
+```
+
+> 说明，上述方式直接生效，即guest用户可以立即登录mysql服务器；后可以查看当前用户；
+
+```mysql
+mysql> select database();
++------------+
+| database() |
++------------+
+| NULL       |
++------------+
+1 row in set (0.00 sec)
+```
+> 说明：如果没有use + 数据库，则select database() 将展示 NULL
+
