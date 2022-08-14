@@ -292,3 +292,158 @@ mysql> INSERT INTO runoob_tbl
     -> VALUES
     -> (0, "JAVA 教程", "RUNOOB.COM", '2016-05-06');
 ```
+
+## 查询数据
+
+### 分页
+```mysql
+mysql> select * from table_name limit (start-1)*pageSize, pageSize;
+
+例如
+    select * from table_name limit 0, 10;
+    select * from table_name limit 10, 10;
+    select * from table_name limit 20, 10;
+```
+
+说明：查询第一页10条数据；查询第二页10条数据；查询第三页10条数据
+
+```mysql
+mysql> select * from table_name limit 10;
+mysql> select * from table_name limit 0, 10;
+```
+
+说明：两条语句等价，都是从第一条数据开始，选择10条数据
+
+### 区分大小写
+默认情况下，mysql不区分大小写，如果需要区分，使用关键字`binary`
+
+```mysql
+mysql> SELECT * from runoob_tbl WHERE BINARY runoob_author='runoob.com';
+```
+
+说明，代码执行顺序
+```mysql
+FROM  --- 从哪张表
+WHERE --- 条件
+GROUP BY --- 先分组，再处理
+HAVING --- 分组的条件
+SELECT --- 选择数据
+DISTINCT --- 去重
+UNION --- 合并
+ORDER BY --- 已经获取到数据了，按照这个顺序排序
+LIMIT and OFFSET ---  已经获取到数据了，按照这个筛选N条数据
+```
+
+## 更新数据
+```mysql
+mysql> UPDATE runoob_tbl SET runoob_title='学习 C++' WHERE runoob_id=3;
+```
+
+### 批量更新
+```mysql
+将所有人的年龄增加 1: update students set age=age+1;
+```
+
+### 仅更新指定字符
+```mysql
+UPDATE runoob_tbl SET runoob_title = REPLACE(runoob_title, 'C++', 'Python') where 
+runoob_id = 3;
+```
+
+## 删除数据
+
+```mysql
+mysql> DELETE FROM runoob_tbl WHERE runoob_id=3;
+mysql> DELETE FROM runoob_tbl;
+```
+
+### delete/truncate/drop 的区别
+
+1. delete 和 truncate 仅仅删除表数据，drop 连表数据和表结构一起删除，打个比方，delete 是单杀，truncate 是团灭，drop 是把电脑摔了。
+2. delete 是 DML（数据操作语言）语句，操作完以后如果没有不想提交事务还可以回滚；truncate 和 drop 是 DDL（数据定义语言） 语句，操作完马上生效，不能回滚，打个比方，delete 是发微信说分手，后悔还可以撤回，truncate 和 drop 是直接扇耳光说滚，不能反悔。
+3. 执行的速度上，drop>truncate>delete，打个比方，drop 是神舟火箭，truncate 是和谐号动车，delete 是自行车。
+
+## like模糊匹配
+
+```mysql
+'%a'     //以a结尾的数据
+'a%'     //以a开头的数据
+'%a%'    //含有a的数据
+'_a_'    //三位且中间字母是a的
+'_a'     //两位且结尾字母是a的
+'a_'     //两位且开头字母是a的
+```
+
+## union/union all
+union 去重；union all 不去重
+
+## 排序
+默认排序：升序，即ASC ；降序 DESC
+
+### 汉字列排序
+
+如果字符集采用的是 gbk(汉字编码字符集)，直接在查询语句后边添加 ORDER BY：
+```mysql
+SELECT * 
+FROM runoob_tbl
+ORDER BY runoob_title;
+```
+
+如果字符集采用的是 utf8(万国码)，需要先对字段进行转码然后排序：
+```mysql
+SELECT * 
+FROM runoob_tbl
+ORDER BY CONVERT(runoob_title using gbk);
+```
+
+## 分组
+```mysql
+mysql> SELECT name, SUM(signin) as signin_count FROM  employee_tbl GROUP BY name;
++--------+--------------+
+| name   | signin_count |
++--------+--------------+
+| 小丽 |            2 |
+| 小明 |            7 |
+| 小王 |            7 |
++--------+--------------+
+3 rows in set (0.00 sec)
+```
+
+
+```mysql
+mysql> SELECT name, SUM(signin) as signin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
++--------+--------------+
+| name   | signin_count |
++--------+--------------+
+| 小丽 |            2 |
+| 小明 |            7 |
+| 小王 |            7 |
+| NULL   |           16 |
++--------+--------------+
+4 rows in set (0.00 sec)
+```
+
+说明：with rollup 做了一个加和，得到所有的总和
+
+
+```mysql
+mysql> SELECT coalesce(name, '总数'), SUM(signin) as signin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
++--------+--------------+
+| name   | signin_count |
++--------+--------------+
+| 小丽 |            2 |
+| 小明 |            7 |
+| 小王 |            7 |
+| 总数   |           16 |
++--------+--------------+
+4 rows in set (0.00 sec)
+```
+
+说明：coalesce函数，如果name为NULL，则使用'总数'
+
+
+
+
+
+
+
