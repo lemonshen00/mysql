@@ -277,9 +277,18 @@ mysql> INSERT INTO table_name  (field1, field2,...fieldN)
     -> (valueC1,valueC2,...valueCN);
 ```
 
-说明：多条数据
+说明：多条数据需要以符号`,`作为分隔符
 
 ### 如果所有列都要添加数据，可以不规定列进行添加数据：
 ```mysql
-INSERT INTO table_name VALUES  (valueA1,valueA2,...valueAN);
+mysql> INSERT INTO table_name
+    -> VALUES
+    -> (valueA1,valueA2,...valueAN);
+```
+
+### 如果添加过主键自增（PRINARY KEY AUTO_INCREMENT）第一列在增加数据的时候，可以写为0或者null，这样添加数据可以自增
+```mysql
+mysql> INSERT INTO runoob_tbl
+    -> VALUES
+    -> (0, "JAVA 教程", "RUNOOB.COM", '2016-05-06');
 ```
