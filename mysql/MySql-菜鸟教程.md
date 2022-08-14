@@ -145,8 +145,8 @@ mysql> select database();
 +------------+
 1 row in set (0.00 sec)
 ```
-> 说明：如果没有use + 数据库，则select database() 将展示 NULL
-
+> 说明：如果没有use + 数据库，则`select database();` 将展示 NULL
+> select 后面加方法，所以方法后面必须要有()，表明这是一个方法；而`show database; show tables;` 则无需加()
 
 # 第三章 创建/删除数据库
 
