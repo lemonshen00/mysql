@@ -225,3 +225,61 @@ LONGTEXT | 0-4 294 967 295 bytes | 极大文本数据
 
 注意：char(n) 和 varchar(n) 中括号中 n 代表字符的个数，并不代表字节个数，比如 CHAR(30) 就可以存储 30 个字符。
 CHAR 和 VARCHAR 类型类似，但它们保存和检索的方式不同。它们的最大长度和是否尾部空格被保留等方面也不同。在存储或检索过程中不进行大小写转换。
+
+
+# 第五章 创建/删除数据库表
+
+## 创建表
+```mysql
+root@host# mysql -u root -p
+Enter password:*******
+mysql> use mysql;
+Database changed
+mysql> CREATE TABLE runoob_tbl(
+   -> runoob_id INT NOT NULL AUTO_INCREMENT,
+   -> runoob_title VARCHAR(100) NOT NULL,
+   -> runoob_author VARCHAR(40) NOT NULL,
+   -> submission_date DATE,
+   -> PRIMARY KEY ( runoob_id )
+   -> )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ ```
+ 
+ 注意：use mysql == use database mysql。列名字后面先跟数据类型，再跟默认值，再跟其他；主键可以由多列组成；默认字符集 = utf8
+ 
+## 删除表
+```mysql
+root@host# mysql -u root -p
+Enter password:*******
+mysql> use RUNOOB;
+Database changed
+mysql> DROP TABLE runoob_tbl;
+mysql>
+```
+
+# 第六章 添加/删除/更新/查询
+
+## 插入数据 
+### 插入1条数据
+```mysql
+mysql> INSERT INTO table_name  (field1, field2,...fieldN)
+    -> VALUES
+    -> (valueA1,valueA2,...valueAN);
+```
+
+说明：mysql语句，以符号 `;`作为命令结束符，即只有遇到符号 `;`才会提交执行sql预计
+
+### 插入多条数据
+```mysql
+mysql> INSERT INTO table_name  (field1, field2,...fieldN)  
+    -> VALUES
+    -> (valueA1,valueA2,...valueAN),
+    -> (valueB1,valueB2,...valueBN),
+    -> (valueC1,valueC2,...valueCN);
+```
+
+说明：多条数据
+
+### 如果所有列都要添加数据，可以不规定列进行添加数据：
+```mysql
+INSERT INTO table_name VALUES  (valueA1,valueA2,...valueAN);
+```
