@@ -147,3 +147,37 @@ mysql> select database();
 ```
 > 说明：如果没有use + 数据库，则select database() 将展示 NULL
 
+
+# 第三章 创建/删除数据库
+
+## 创建数据库
+
+### 方法1
+```mysql
+root@host# mysql -u root -p
+mysql> create database if not exists lm_test_db1;
+```
+
+创建的时候，可以加上`if not exists`，即如果不存在才创建
+
+### 方法2
+```mysql
+root@host# mysqladmin -u root -p create lm_test_db_2;
+```
+
+创建的时候，不能加上`if not exists`，即没那么灵活；并且，是 `create` 而不是 `create database`
+
+
+## 删除数据库
+
+### 方法1
+```mysql
+mysql> drop database lm_test_db1;
+```
+
+### 方法2
+```mysql
+root@host# mysqladmin -u root -p drop lm_test_db_2;
+```
+
+注意，是 `drop ` 而不是 `drop database`
