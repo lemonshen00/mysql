@@ -454,8 +454,239 @@ mysql> SELECT * FROM  employee_tbl where runoob_count is NULL; // 起作用
 # 第七章 正则表达式
 
 
+模式 | 描述
+---|---
+^ | 匹配输入字符串的开始位置。如 ^ab，匹配以ab开头的字符串。
+$ | 匹配输入字符串的结束位置。如 ab$，匹配以ab结尾的字符串。
+. | 匹配除 "\n" 之外的任何单个字符。要匹配包括 '\n' 在内的任何字符，请使用像 '[.\n]' 的模式。
+[...] | 匹配所包含的任意`一个字符`。例如， '[abc]' 可以匹配 "plain" 中的 'a'。
+[^...] | 取反操作，匹配未包含的任意字符。例如， '[^abc]' 可以匹配 "plain" 中的'p'。
+p1|p2|p3 | 匹配 p1 或 p2 或 p3。例如，'z|food' 能匹配 "z" 或 "food"。'(z|f)ood' 则匹配 "zood" 或 "food"。
+* | 匹配前面的子表达式零次或多次。例如，zo* 能匹配 "z" 以及 "zoo"。* 等价于{0,}。
++ | 匹配前面的子表达式一次或多次。例如，'zo+' 能匹配 "zo" 以及 "zoo"，但不能匹配 "z"。+ 等价于 {1,}。
+{n} | n 是一个非负整数。匹配确定的 n 次。例如，'o{2}' 不能匹配 "Bob" 中的 'o'，但是能匹配 "food" 中的两个 o。
+{n,m} | m 和 n 均为非负整数，其中n <= m。最少匹配 n 次且最多匹配 m 次。
 
 
+
+查找name字段中以'st'为开头的所有数据：
+```mysql
+mysql> SELECT name FROM person_tbl WHERE name REGEXP '^st';
+```
+
+查找name字段中以'ok'为结尾的所有数据：
+```mysql
+mysql> SELECT name FROM person_tbl WHERE name REGEXP 'ok$';
+```
+
+查找name字段中包含'mar'字符串的所有数据：
+```mysql
+mysql> SELECT name FROM person_tbl WHERE name REGEXP 'mar';
+```
+
+查找name字段中以元音字符开头或以'ok'字符串结尾的所有数据：
+```mysql
+mysql> SELECT name FROM person_tbl WHERE name REGEXP '^[aeiou]|ok$';
+```
+
+
+# 第八章 事务
+在 MySQL 中只有使用了 Innodb 数据库引擎的数据库或表才支持事务。
+
+事务处理可以用来维护数据库的完整性，保证成批的 SQL 语句要么全部执行，要么全部不执行。
+
+事务用来管理 insert,update,delete 语句
+
+一般来说，事务是必须满足4个条件（ACID）：：原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（Isolation，又称独立性）、持久性（Durability）。
+
+原子性：一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。
+
+一致性：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设规则，这包含资料的精确度、串联性以及后续数据库可以自发性地完成预定的工作。
+
+隔离性：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。
+
+持久性：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。
+
+## 事务控制语句
+`BEGIN` 或 `START TRANSACTION` 显式地开启一个事务；
+
+`COMMIT` 也可以使用 `COMMIT WORK`，不过二者是等价的。COMMIT 会提交事务，并使已对数据库进行的所有修改成为永久性的；
+
+`ROLLBACK` 也可以使用 `ROLLBACK WORK`，不过二者是等价的。回滚会结束用户的事务，并撤销正在进行的所有未提交的修改；
+
+`SAVEPOINT identifier`，`SAVEPOINT` 允许在事务中创建一个保存点，一个事务中可以有多个 `SAVEPOINT`；
+
+`RELEASE SAVEPOINT identifier` 删除一个事务的保存点，当没有指定的保存点时，执行该语句会抛出一个异常；
+
+`ROLLBACK TO identifier` 把事务回滚到标记点；
+
+`SET TRANSACTION` 用来设置事务的隔离级别。InnoDB 存储引擎提供事务的隔离级别有`READ UNCOMMITTED`、`READ COMMITTED`、`REPEATABLE READ` 和 `SERIALIZABLE`。
+
+> 说明：savepoint 是在数据库事务处理中实现“子事务”（subtransaction），也称为嵌套事务的方法。事务可以回滚到 savepoint 而不影响 savepoint 创建前的变化, 不需要放弃整个事务。
+ROLLBACK 回滚的用法可以设置保留点 SAVEPOINT，执行多条操作时，回滚到想要的那条语句之前。
+
+
+## MYSQL 事务处理主要有两种方法
+
+### 用 BEGIN, ROLLBACK, COMMIT来实现
+
+BEGIN 开始一个事务
+
+ROLLBACK 事务回滚
+
+COMMIT 事务确认
+
+### 直接用 SET 来改变 MySQL 的自动提交模式
+
+SET AUTOCOMMIT=0 禁止自动提交
+
+SET AUTOCOMMIT=1 开启自动提交
+
+举例子
+```mysql
+mysql> use RUNOOB;
+Database changed
+mysql> CREATE TABLE runoob_transaction_test( id int(5)) engine=innodb;  # 创建数据表
+Query OK, 0 rows affected (0.04 sec)
+ 
+mysql> select * from runoob_transaction_test;
+Empty set (0.01 sec)
+ 
+mysql> begin;  # 开始事务
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql> insert into runoob_transaction_test value(5);
+Query OK, 1 rows affected (0.01 sec)
+ 
+mysql> insert into runoob_transaction_test value(6);
+Query OK, 1 rows affected (0.00 sec)
+ 
+mysql> commit; # 提交事务
+Query OK, 0 rows affected (0.01 sec)
+ 
+mysql>  select * from runoob_transaction_test;
++------+
+| id   |
++------+
+| 5    |
+| 6    |
++------+
+2 rows in set (0.01 sec)
+ 
+mysql> begin;    # 开始事务
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql>  insert into runoob_transaction_test values(7);
+Query OK, 1 rows affected (0.00 sec)
+ 
+mysql> rollback;   # 回滚
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql>   select * from runoob_transaction_test;   # 因为回滚所以数据没有插入
++------+
+| id   |
++------+
+| 5    |
+| 6    |
++------+
+2 rows in set (0.01 sec)
+ 
+mysql>
+```
+
+# 第九章 alter语句
+
+```mysql
+mysql> create table testalter_tbl
+    -> (
+    -> i INT,
+    -> c CHAR(1)
+    -> );
+```
+
+## 删除，添加或修改表字段
+
+如下命令使用了 ALTER 命令及 DROP 子句来删除以上创建表的 i 字段：
+```mysql
+mysql> ALTER TABLE testalter_tbl  DROP i;
+```
+如果数据表中只剩余一个字段则无法使用DROP来删除字段。
+
+MySQL 中使用 ADD 子句来向数据表中添加列，如下实例在表 testalter_tbl 中添加 i 字段，并定义数据类型:
+
+```mysql
+mysql> ALTER TABLE testalter_tbl ADD i INT;
+```
+执行以上命令后，i 字段会自动添加到数据表字段的末尾。
+
+```mysql
+mysql> SHOW COLUMNS FROM testalter_tbl;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| c     | char(1) | YES  |     | NULL    |       |
+| i     | int(11) | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+```
+
+如果你需要指定新增字段的位置，可以使用MySQL提供的关键字 FIRST (设定位第一列)， AFTER 字段名（设定位于某个字段之后）。
+
+```mysql
+ALTER TABLE testalter_tbl DROP i;
+ALTER TABLE testalter_tbl ADD i INT FIRST;
+ALTER TABLE testalter_tbl DROP i;
+ALTER TABLE testalter_tbl ADD i INT AFTER c;
+```
+FIRST 和 AFTER 关键字可用于 ADD 与 MODIFY 子句，所以如果你想重置数据表字段的位置就需要先使用 DROP 删除字段然后使用 ADD 来添加字段并设置位置。
+
+
+## 修改字段类型及名称
+
+如果需要修改字段类型及名称, 你可以在ALTER命令中使用 MODIFY 或 CHANGE 子句 。
+
+例如，把字段 c 的类型从 CHAR(1) 改为 CHAR(10)，可以执行以下命令:
+```mysql
+mysql> ALTER TABLE testalter_tbl MODIFY c CHAR(10);
+```
+
+使用 CHANGE 子句, 语法有很大的不同。 在 CHANGE 关键字之后，紧跟着的是你要修改的字段名，然后指定新字段名及类型。尝试如下实例：
+```mysql
+mysql> ALTER TABLE testalter_tbl CHANGE i j BIGINT;
+mysql> ALTER TABLE testalter_tbl CHANGE j j INT;
+```
+
+## 设置默认值
+
+修改类型，同时设置默认值
+```mysql
+mysql> ALTER TABLE testalter_tbl 
+    -> MODIFY j BIGINT NOT NULL DEFAULT 100;
+```
+
+仅修改默认值
+```mysql
+mysql> ALTER TABLE testalter_tbl ALTER i SET DEFAULT 1000;
+```
+
+你也可以使用 ALTER 命令及 DROP子句来删除字段的默认值，如下实例：
+```mysql
+mysql> ALTER TABLE testalter_tbl ALTER i DROP DEFAULT;
+mysql> SHOW COLUMNS FROM testalter_tbl;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| c     | char(1) | YES  |     | NULL    |       |
+| i     | int(11) | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+Changing a Table Type:
+```
+
+## 修改表名
+```mysql
+mysql> ALTER TABLE testalter_tbl RENAME TO alter_tbl;
+```
 
 
 
