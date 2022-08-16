@@ -331,7 +331,7 @@ GROUP BY --- 先分组，再处理
 HAVING --- 分组的条件
 SELECT --- 选择数据
 DISTINCT --- 去重
-UNION --- 合并
+UNION --- 合并（可以理解为 union 两边的sql先执行）
 ORDER BY --- 已经获取到数据了，按照这个顺序排序
 LIMIT and OFFSET ---  已经获取到数据了，按照这个筛选N条数据
 ```
