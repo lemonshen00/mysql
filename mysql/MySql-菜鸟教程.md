@@ -777,3 +777,42 @@ mysql> ALTER TABLE testalter_tbl ADD INDEX (c);
 ```mysql
 mysql> ALTER TABLE testalter_tbl DROP INDEX c;
 ```
+
+# 第十一章 临时表和元数据
+
+## 临时表
+
+MySQL 临时表在我们需要保存一些临时数据时是非常有用的。临时表只在当前连接可见，当关闭连接时，Mysql会自动删除表并释放所有空间。
+
+```mysql
+mysql> CREATE TEMPORARY TABLE SalesSummary (
+    -> product_name VARCHAR(50) NOT NULL
+    -> , total_sales DECIMAL(12,2) NOT NULL DEFAULT 0.00
+    -> , avg_unit_price DECIMAL(7,2) NOT NULL DEFAULT 0.00
+    -> , total_units_sold INT UNSIGNED NOT NULL DEFAULT 0
+);
+```
+
+当你使用 SHOW TABLES命令显示数据表列表时，你将无法看到 SalesSummary表。
+
+如果你退出当前MySQL会话，再使用 SELECT命令来读取原先创建的临时表数据，那你会发现数据库中没有该表的存在，因为在你退出时该临时表已经被销毁了。
+
+```mysql
+CREATE TEMPORARY TABLE 临时表名 AS
+(
+    SELECT *  FROM 旧的表名
+    LIMIT 0,10000
+);
+```
+
+## 元数据
+
+命令 | 描述 
+---|---
+SELECT VERSION( ) | 服务器版本信息
+SELECT DATABASE( ) | 当前数据库名 (或者返回空)
+SELECT USER( ) | 当前用户名
+SHOW STATUS | 服务器状态
+SHOW VARIABLES | 服务器配置变量
+
+
