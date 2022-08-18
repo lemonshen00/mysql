@@ -671,6 +671,9 @@ mysql> ALTER TABLE testalter_tbl
 mysql> ALTER TABLE testalter_tbl ALTER i SET DEFAULT 1000;
 ```
 
+> 注意，此语句中有两个alter
+
+
 你也可以使用 ALTER 命令及 DROP子句来删除字段的默认值，如下实例：
 ```mysql
 mysql> ALTER TABLE testalter_tbl ALTER i DROP DEFAULT;
@@ -684,6 +687,8 @@ mysql> SHOW COLUMNS FROM testalter_tbl;
 2 rows in set (0.00 sec)
 Changing a Table Type:
 ```
+
+> 注意，此语句中有两个alter
 
 ## 修改表名
 ```mysql
