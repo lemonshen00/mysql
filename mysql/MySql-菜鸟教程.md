@@ -177,6 +177,8 @@ root@host# mysql -u root -p
 mysql> drop database lm_test_db1;
 ```
 
+> 必须指明 drop database，而不是 drop
+
 ### 方法2
 ```mysql
 root@host# mysqladmin -u root -p drop lm_test_db_2;
@@ -464,8 +466,8 @@ $ | 匹配输入字符串的结束位置。如 ab$，匹配以ab结尾的字符�
 . | 匹配除 "\n" 之外的任何单个字符。要匹配包括 '\n' 在内的任何字符，请使用像 '[.\n]' 的模式。
 [...] | 匹配所包含的任意`一个字符`。例如， '[abc]' 可以匹配 "plain" 中的 'a'。
 [^...] | 取反操作，匹配未包含的任意字符。例如， '[^abc]' 可以匹配 "plain" 中的'p'。
-* | 匹配前面的子表达式零次或多次。例如，zo* 能匹配 "z" 以及 "zoo"。* 等价于{0,}。
-+ | 匹配前面的子表达式一次或多次。例如，'zo+' 能匹配 "zo" 以及 "zoo"，但不能匹配 "z"。+ 等价于 {1,}。
+\* | 匹配前面的子表达式零次或多次。例如，zo* 能匹配 "z" 以及 "zoo"。* 等价于{0,}。
+\+ | 匹配前面的子表达式一次或多次。例如，'zo+' 能匹配 "zo" 以及 "zoo"，但不能匹配 "z"。+ 等价于 {1,}。
 {n} | n 是一个非负整数。匹配确定的 n 次。例如，'o{2}' 不能匹配 "Bob" 中的 'o'，但是能匹配 "food" 中的两个 o。
 {n,m} | m 和 n 均为非负整数，其中n <= m。最少匹配 n 次且最多匹配 m 次。
 
@@ -612,7 +614,7 @@ mysql> create table testalter_tbl
 ```mysql
 mysql> ALTER TABLE testalter_tbl  DROP i;
 ```
-如果数据表中只剩余一个字段则无法使用DROP来删除字段。
+如果数据表中只剩余一个字段则无法使用DROP来删除字段。必须指明 ALTER TABLE，而不是 ALTER
 
 MySQL 中使用 ADD 子句来向数据表中添加列，如下实例在表 testalter_tbl 中添加 i 字段，并定义数据类型:
 
